@@ -1,5 +1,3 @@
-#include <math.h>
-
 /*
 ** SEVERELY UNTESTED AND IS PROBABLY 100% BROKEN!!! :D:D:D:D
 */
