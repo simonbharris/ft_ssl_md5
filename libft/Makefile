@@ -60,6 +60,7 @@ SRC_FILES = ft_abs.c \
 			ft_putstr.c \
 			ft_putwstr.c \
 			ft_putstr_fd.c \
+			ft_putupper.c \
 			ft_realloc.c \
 			ft_stpncpy.c \
 			ft_strcat.c \

@@ -24,7 +24,11 @@ char		*ft_strffjoin(char **dst, char **src)
 	char *tmp;
 
 	if (*dst == NULL)
-		*dst = ft_strdup("");
+	{
+		*dst = ft_strdup(*src);
+        ft_memdel((void **)&(*src));
+		return (*dst);
+	}
 	tmp = ft_strdup(*dst);
 	ft_memdel((void **)&(*dst));
 	*dst = ft_strjoin(tmp, *src);
