@@ -22,23 +22,11 @@ void ft_ssl_md5_usage(void);
 #define MD5_SSL_BUFFSIZE 256
 
 /*
- * known bugs:
- * -shello should treat this as valid string representing "hello"
- *		This is most notable in the first set of options,
- *		IE: ... md5 -sqr does not treat this as quiet nor reverse mode. but instead a string representing "qr"
- *
- * Reading files gives unexpected results. I may be missing the newline character since GNL drops this.
- *      UPDATE: Now gives the proper return, but debugging shows like it's iterating through the read way too many times. Check for problems and optimize.
- *      UPDATE: (Works in debug mode, not otherwise -- GRRRR)
- *      UPDATE: Nevermind, forgot to recompile dependency bugfix, forgot debugger compiles differently. ^^;
- *
  * Still need to be able to read from stdin
  *
  * Specifying hash type without any other input results in just a new line printing
  * 		the md5 binary switches to expect an input from the user.
  *      This ties in with the above objective for reading from stdin.
- *
- * Specifying absolute address for file causes a seg fault.
  */
 
 /*
@@ -53,6 +41,12 @@ static const t_ssl_opts ssl_opts[] =
 	{ 's', FTSSL_S }, // Designates the following is a string
 	{ '\0', 0 }
 };
+
+
+/*
+** ssl_funct's function pointers are char *(*)(char *)
+** Passed parameter is the message, return is the malloced digest.
+*/
 
 static const t_ssl_f ssl_functs[] =
 {
@@ -166,7 +160,7 @@ char *get_file_contents(char *file)
         }
 	}
 	else
-		ft_printf("Error, Unable to read file, %s, check name and permissions\n", file);
+		ft_printf("ft_ssl: %s Cannot open, check name and permissions\n", file);
 	return (contents);
 }
 
@@ -207,24 +201,39 @@ void print_explicit_format(t_ssl_f hashtype, char* out_digest, char *original , 
 	ft_printf("\n");
 }
 
-// TODO: HAve this function handle pulling the proper string for the -s coption, in addition to throwing out an error if nothing is supplied.
-char *get_string_digest(char **argv_offset, t_ssl_f *ssl_f)
+/*
+** Should be run on the argv[] that contains the '-s' string.
+** Detects if the string is provided in the same 'string' or as a separate parameter,
+** IE: '-shello' vs '-s hello'
+** argv_offset is the argv addressed pass at a specific point in the index, IE: &argv[3]
+**      in such that argv_offset[0] will contain the '-s' option.
+*/
+
+void handle_string_option(char **argv_offset, const t_ssl_f *ssl_f, int *i)
 {
-    int i;
     char *digest;
     char *tmp;
 
-    tmp = ft_strchr(argv_offset[i], 's') + 1;
+    tmp = ft_strchr(argv_offset[0], 's') + 1;
     if (*tmp)
+    {
         digest = ssl_f->funct(tmp);
-    else if (argv_offset[++i] && argv_offset[i][0])
-        digest = ssl_f->funct(argv_offset[i]);
+        print_explicit_format(*ssl_f, digest, tmp, 1);
+        *i += 1;
+    }
+    else if (argv_offset[1])
+    {
+        digest = ssl_f->funct(argv_offset[1]);
+        print_explicit_format(*ssl_f, digest, argv_offset[1], 1);
+        *i += 2;
+    }
     else
     {
         ft_printf("ft_ssl: option requires an argument -- s");
         ft_ssl_md5_usage();
+        return ;
     }
-    return (digest);
+    free(digest);
 }
 
 void print_hash(char **argv, const t_ssl_f *ssl_f)
@@ -232,31 +241,27 @@ void print_hash(char **argv, const t_ssl_f *ssl_f)
 	int i;
 	char *digest;
 	char *file_content;
-    char *tmp;
 
 	i = 0;
 	if (argv[i] && argv[i][0] == '-' && argv[i][1])
 		load_ftssl_opts(argv[i]);
 	if (g_ft_ssl_flags & FTSSL_S)
-	{
-        digest = ssl_f->funct(argv[++i]);
-        print_explicit_format(*ssl_f, digest, argv[i], 1);
+    {
+        while (argv[i] && ft_strncmp(argv[i], "-s", 2) == 0)
+        {
+            handle_string_option(&argv[i], ssl_f, &i);
+        }
 	}
 	while (argv[i])
 	{
-		if (ft_strequ(argv[i], "-s") && argv[i + 1])
-		{
-			digest = ssl_f->funct(argv[++i]);
-			print_explicit_format(*ssl_f, digest, argv[i], 1);
-		}
-		else
-		{
-			digest = ssl_f->funct(file_content = get_file_contents(argv[i]));
-			ft_memdel((void **)&(file_content));
-			print_explicit_format(*ssl_f, digest, argv[i], 0);
-		}
-		free(digest);
-		i++;
+        if ((file_content = get_file_contents(argv[i])) != NULL)
+        {
+            digest = ssl_f->funct(file_content);
+            ft_memdel((void **) &(file_content));
+            print_explicit_format(*ssl_f, digest, argv[i], 0);
+        }
+        ft_memdel((void **)&(digest));
+        i++;
 	}
 }
 
@@ -284,7 +289,7 @@ int main(int argc, char **argv)
 		}
 		if (!ssl_functs[i].name)
 		{
-			ft_printf("ft_ssl_md5: Error: '%s' is an invalid command\n", argv[1]);
+			ft_printf("ft_ssl: Error: '%s' is an invalid command\n", argv[1]);
             ft_ssl_md5_usage();
 		}
 	}
