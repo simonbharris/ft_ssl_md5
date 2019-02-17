@@ -1,7 +1,8 @@
-NAME = ft_ssl_md5
+NAME = ft_ssl
 
 SRC_DIR = src/
-SRC_RAW = main
+SRC_RAW = main\
+            md5
 SRC = $(SRC_RAW:%=$(SRC_DIR)%.c)
 
 LIBFT_INC = -I libft/includes/ -I libft/src/ft_printf/includes

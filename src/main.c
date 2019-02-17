@@ -19,22 +19,26 @@
 char *debugsha256out(char *msg);
 void ft_ssl_md5_usage(void);
 
+#define MD5_SSL_BUFFSIZE 256
+
 /*
  * known bugs:
  * -shello should treat this as valid string representing "hello"
  *		This is most notable in the first set of options,
- *		IE: ... md5 -sqr does not treat this as quiet mode nore reverse. but instead a string representing "qr"
+ *		IE: ... md5 -sqr does not treat this as quiet nor reverse mode. but instead a string representing "qr"
  *
  * Reading files gives unexpected results. I may be missing the newline character since GNL drops this.
- *
- * Reading from a file prints the format ("filename") rather than the expected (filename)
+ *      UPDATE: Now gives the proper return, but debugging shows like it's iterating through the read way too many times. Check for problems and optimize.
+ *      UPDATE: (Works in debug mode, not otherwise -- GRRRR)
+ *      UPDATE: Nevermind, forgot to recompile dependency bugfix, forgot debugger compiles differently. ^^;
  *
  * Still need to be able to read from stdin
  *
  * Specifying hash type without any other input results in just a new line printing
  * 		the md5 binary switches to expect an input from the user.
+ *      This ties in with the above objective for reading from stdin.
  *
- *
+ * Specifying absolute address for file causes a seg fault.
  */
 
 /*
@@ -59,7 +63,7 @@ static const t_ssl_f ssl_functs[] =
 
 void ft_ssl_md5_usage(void)
 {
-	ft_printf("usage: ft_ssl_md5 command [command opts] [command args]\n");
+	ft_printf("usage: ft_ssl command [command opts] [command args]\n");
 }
 
 void ft_ssl_help(void)
@@ -67,7 +71,7 @@ void ft_ssl_help(void)
     int i;
 
     i = 0;
-    ft_printf("usage: ft_ssl_md5 command [command opts] [command args]\n");
+    ft_ssl_md5_usage();
     ft_printf("commands: [md5 | sha256]\n");
 	ft_printf("command opts: [-");
     while (ssl_opts[i].c && ssl_opts[i].c != 's')
@@ -129,6 +133,8 @@ int load_ftssl_opts(char *opts)
 			if (!(val = get_flag_val(opts[i])))
 				ftssl_err_opt(opts[i]);
 			g_ft_ssl_flags |= val;
+            if (opts[i] == 's')
+                break ;
 			i++;
 		}
 		return (1);
@@ -144,13 +150,20 @@ char *get_file_contents(char *file)
 {
 	int fd;
 	char *contents;
-	char *line;
+	char buffer[MD5_SSL_BUFFSIZE];
+    char *tmp;
+    int ret;
 
 	contents = NULL;
 	if ((fd = open(file, O_RDONLY)) > -1)
 	{
-		while (get_next_line(fd, &line) > 0)
-			contents = ft_strffjoin(&contents, &line);
+		while ((ret = read(fd, buffer, MD5_SSL_BUFFSIZE)) > 0)
+        {
+            buffer[ret] = 0;
+            tmp = contents;
+            contents = ft_strjoin(contents, buffer);
+            free(tmp);
+        }
 	}
 	else
 		ft_printf("Error, Unable to read file, %s, check name and permissions\n", file);
@@ -194,19 +207,40 @@ void print_explicit_format(t_ssl_f hashtype, char* out_digest, char *original , 
 	ft_printf("\n");
 }
 
+// TODO: HAve this function handle pulling the proper string for the -s coption, in addition to throwing out an error if nothing is supplied.
+char *get_string_digest(char **argv_offset, t_ssl_f *ssl_f)
+{
+    int i;
+    char *digest;
+    char *tmp;
+
+    tmp = ft_strchr(argv_offset[i], 's') + 1;
+    if (*tmp)
+        digest = ssl_f->funct(tmp);
+    else if (argv_offset[++i] && argv_offset[i][0])
+        digest = ssl_f->funct(argv_offset[i]);
+    else
+    {
+        ft_printf("ft_ssl: option requires an argument -- s");
+        ft_ssl_md5_usage();
+    }
+    return (digest);
+}
+
 void print_hash(char **argv, const t_ssl_f *ssl_f)
 {
 	int i;
 	char *digest;
 	char *file_content;
+    char *tmp;
 
 	i = 0;
 	if (argv[i] && argv[i][0] == '-' && argv[i][1])
-		load_ftssl_opts(argv[i++]);
+		load_ftssl_opts(argv[i]);
 	if (g_ft_ssl_flags & FTSSL_S)
 	{
-        digest = ssl_f->funct(argv[i]);
-        print_explicit_format(*ssl_f, digest, argv[i++], 1);
+        digest = ssl_f->funct(argv[++i]);
+        print_explicit_format(*ssl_f, digest, argv[i], 1);
 	}
 	while (argv[i])
 	{
@@ -219,7 +253,7 @@ void print_hash(char **argv, const t_ssl_f *ssl_f)
 		{
 			digest = ssl_f->funct(file_content = get_file_contents(argv[i]));
 			ft_memdel((void **)&(file_content));
-			print_explicit_format(*ssl_f, digest, argv[i], 1);
+			print_explicit_format(*ssl_f, digest, argv[i], 0);
 		}
 		free(digest);
 		i++;
@@ -228,7 +262,6 @@ void print_hash(char **argv, const t_ssl_f *ssl_f)
 
 int main(int argc, char **argv)
 {
-	char *str;
 	const t_ssl_f *sfunct;
 
 	g_ft_ssl_flags = 0;
