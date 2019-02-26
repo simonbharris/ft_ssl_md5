@@ -37,27 +37,26 @@ LOGO = $(CK)$(CG)[$(NAME)]
 all: start $(NAME)
 
 $(NAME): start $(OBJ) $(LIB)
-	@gcc -Llibft/ -lft -lftprintf -I libft/includes/ $(INCLUDES) $(OBJ) -o $(NAME)
-	@echo "$(LOGO) Built:$(CY) ft_ssl$(CE)";
+	gcc -Llibft/ -lft -lftprintf -I libft/includes/ $(INCLUDES) $(OBJ) -o $(NAME)
+	echo "$(LOGO) Built:$(CY) ft_ssl$(CE)"
 
 start:
-	@echo "$(LOGO) Making$(CY) ft_ssl$(CE)";
+	echo "$(LOGO) Making$(CY) ft_ssl$(CE)"
 
 $(LIB):
-	@make -C libft/
+	make -C libft/
 
 $(OBJ_DIR):
-	@mkdir -p $(OBJ_DIR)
+	mkdir -p $(OBJ_DIR)
 
 $(OBJ): $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(OBJ_DIR)
-	@echo "$(LOGO) Compiling:$(CY) $@ $(CE)$(CR)
-	@gcc -c $< -o $@ $(INC)
+	gcc -c $< -o $@ $(INC)
 
 clean:
 	@rm -Rf $(OBJ_DIR)
 
 fclean: clean
-	@rm $(NAME)
+	rm $(NAME)
 
 re: fclean all
 
