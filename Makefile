@@ -38,6 +38,7 @@ all: start $(NAME)
 
 $(NAME): start $(OBJ) $(LIB)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	gcc -Llibft/ -lft -lftprintf -I libft/includes/ $(INCLUDES) $(OBJ) -o $(NAME)
 	echo "$(LOGO) Built:$(CY) ft_ssl$(CE)"
 
@@ -53,6 +54,8 @@ $(OBJ_DIR):
 $(OBJ): $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(OBJ_DIR)
 	gcc -c $< -o $@ $(INC)
 =======
+=======
+>>>>>>> Stashed changes
 	@gcc -Llibft/ -lft -lftprintf -I libft/includes/ $(INCLUDES) $(OBJ) -o $(NAME)
 	@echo "$(LOGO) Built:$(CY) ft_ssl$(CE)";
 
@@ -68,6 +71,9 @@ $(OBJ_DIR):
 $(OBJ): $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(OBJ_DIR)
 	@echo "$(LOGO) Compiling:$(CY) $@ $(CE)$(CR)"
 	@gcc -c $< -o $@ $(INC)
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
 clean:
@@ -75,7 +81,11 @@ clean:
 
 fclean: clean
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	rm $(NAME)
+=======
+	@rm $(NAME)
+>>>>>>> Stashed changes
 =======
 	@rm $(NAME)
 >>>>>>> Stashed changes
