@@ -10,32 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft/includes/libft.h"
 #include <ft_ssl.h>
-
-void	ft_ssl_usage(void)
-{
-	int i;
-
-	i = 0;
-	ft_printf("usage: ft_ssl command [-");
-	while (ssl_opts[i].c && ssl_opts[i].c != 's')
-		ft_printf("%c", ssl_opts[i++].c);
-	ft_printf("] [-s string] [files ...]\n");
-}
-
-void	ft_ssl_help(void)
-{
-	int i;
-
-	i = 0;
-	ft_ssl_usage();
-	ft_printf("commands: ");
-	while (ssl_functs[i].name)
-		ft_printf("%s ", ssl_functs[i++].name);
-	ft_printf("\n");
-	exit(0);
-}
 
 /*
 ** Should be run on the argv[] that contains the '-s' string.
@@ -48,22 +23,32 @@ void	ft_ssl_help(void)
 ** in such that argv_offset[0] will contain the '-s' option.
 */
 
-void	handle_string_option(char **argv_offset, const t_ssl_f *ssl_f, int *i)
+void	print_stropt(char *str, t_msg *msg, const t_ssl_f *ssl_f)
 {
 	char *digest;
-	char *tmp;
 
+	msg->contents = (unsigned char *)ft_strdup(str);
+	msg->len = ft_strlen(str);
+	digest = ssl_f->funct(msg);
+	print_explicit_format(*ssl_f, digest, str, 1);
+	free(digest);
+}
+
+void	handle_string_option(char **argv_offset, const t_ssl_f *ssl_f, int *i)
+{
+	char	*tmp;
+	t_msg	*msg;
+
+	msg = init_msg();
 	tmp = ft_strchr(argv_offset[0], 's') + 1;
 	if (*tmp)
 	{
-		digest = ssl_f->funct(tmp);
-		print_explicit_format(*ssl_f, digest, tmp, 1);
+		print_stropt(tmp, msg, ssl_f);
 		*i += 1;
 	}
 	else if (argv_offset[1])
 	{
-		digest = ssl_f->funct(argv_offset[1]);
-		print_explicit_format(*ssl_f, digest, argv_offset[1], 1);
+		print_stropt(argv_offset[1], msg, ssl_f);
 		*i += 2;
 	}
 	else
@@ -72,14 +57,14 @@ void	handle_string_option(char **argv_offset, const t_ssl_f *ssl_f, int *i)
 		ft_ssl_usage();
 		exit(0);
 	}
-	free(digest);
+	del_msg(&msg);
 }
 
 void	print_hash(char **argv, const t_ssl_f *ssl_f)
 {
 	int		i;
 	char	*digest;
-	char	*file_content;
+	t_msg	*message;
 
 	i = 0;
 	load_ftssl_opts(argv, &i);
@@ -93,10 +78,10 @@ void	print_hash(char **argv, const t_ssl_f *ssl_f)
 		i++;
 	while (argv[i])
 	{
-		if ((file_content = get_file_contents(argv[i])) != NULL)
+		if ((message = get_file_contents(argv[i])) != NULL)
 		{
-			digest = ssl_f->funct(file_content);
-			ft_memdel((void **)&(file_content));
+			digest = ssl_f->funct(message);
+			del_msg(&message);
 			print_explicit_format(*ssl_f, digest, argv[i], 0);
 			ft_memdel((void **)&(digest));
 		}
@@ -117,14 +102,14 @@ int		main(int argc, char **argv)
 	else
 	{
 		i = -1;
-		while (ssl_functs[++i].name)
-			if (ft_strequ(ssl_functs[i].name, argv[1]))
+		while (g_ssl_functs[++i].name)
+			if (ft_strequ(g_ssl_functs[i].name, argv[1]))
 			{
-				sfunct = &ssl_functs[i];
+				sfunct = &g_ssl_functs[i];
 				print_hash(&argv[2], sfunct);
 				break ;
 			}
-		if (!ssl_functs[i].name)
+		if (!g_ssl_functs[i].name)
 		{
 			ft_printf("ft_ssl: Error: '%s' is an invalid c ommand\n", argv[1]);
 			ft_ssl_usage();

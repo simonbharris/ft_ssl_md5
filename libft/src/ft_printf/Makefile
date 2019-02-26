@@ -6,7 +6,7 @@
 #    By: sharris <sharris@student.42.us.org>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/08/19 15:50:45 by sharris           #+#    #+#              #
-#    Updated: 2018/11/12 01:10:41 by sharris          ###   ########.fr        #
+#    Updated: 2019/02/22 21:03:42 by sharris          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -77,6 +77,13 @@ INC = -I $(INC_DIR)
 
 LIBFT_OBJ = $(LIBFT_SRC:$(LIBFT_DIR)%.c=$(LIBFT_SRC)obj/%.o)
 
+CK = \033[K
+CG = \033[92m
+CY = \033[93m
+CE = \033[0m
+CR = \033[1A
+LOGO = $(CK)$(CG)[ft_printf]
+
 CC = gcc
 WFLAGS = -Wall -Wextra -Werror
 
@@ -86,22 +93,25 @@ ARFLAGS = rcs
 all: $(NAME)
 
 $(OBJ): $(OBJ_DIR)%.o : ./$(SRC_DIR)%.c
-	$(CC) -c $(INC) $< -o $@
+	@echo "$(LOGO) Compiling:$(CY) $@ $(CE)$(CR)"
+	@$(CC) -c $(INC) $< -o $@
 
-$(NAME): $(OBJ_DIR) $(OBJ) $(LIBFT_OBJ)
-	$(AR) $(ARFLAGS) $(NAME) $(LIBFT_OBJ) $(OBJ) 
+$(NAME): $(OBJ_DIR) $(OBJ) $(LIBFT_OBJ)	
+	@echo "$(LOGO) Building:$(CY) ft_printf... $(CE)$(CR)"
+	@$(AR) $(ARFLAGS) $(NAME) $(LIBFT_OBJ) $(OBJ) 
+	@echo "$(LOGO) Built:$(CY) ft_printf $(CE)"
 
 $(LIBFT_OBJ):
-	make re -C $(LIBFT_DIR)
+	@make re -C $(LIBFT_DIR)
 
 $(OBJ_DIR):
-	mkdir obj/
+	@mkdir obj/
 
 clean:
-	rm -Rf $(OBJ_DIR)
+	@rm -Rf $(OBJ_DIR)
 
 fclean: clean
-	rm -f $(NAME)
+	@rm -f $(NAME)
 
 re: fclean all
 
