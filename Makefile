@@ -37,6 +37,7 @@ LOGO = $(CK)$(CG)[$(NAME)]
 all: start $(NAME)
 
 $(NAME): start $(OBJ) $(LIB)
+<<<<<<< HEAD
 	@gcc -Llibft/ -lft -lftprintf -I libft/includes/ $(INCLUDES) $(OBJ) -o $(NAME)
 	@echo "$(LOGO) Built:$(CY) ft_ssl$(CE)";
 
@@ -52,12 +53,32 @@ $(OBJ_DIR):
 $(OBJ): $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(OBJ_DIR)
 	@echo "$(LOGO) Compiling:$(CY) $@ $(CE)$(CR)"
 	@gcc -c $< -o $@ $(INC)
+=======
+	gcc -Llibft/ -lft -lftprintf -I libft/includes/ $(INCLUDES) $(OBJ) -o $(NAME)
+	echo "$(LOGO) Built:$(CY) ft_ssl$(CE)"
+
+start:
+	echo "$(LOGO) Making$(CY) ft_ssl$(CE)"
+
+$(LIB):
+	make -C libft/
+
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
+
+$(OBJ): $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(OBJ_DIR)
+	gcc -c $< -o $@ $(INC)
+>>>>>>> origin/start_sha224_dev
 
 clean:
 	@rm -Rf $(OBJ_DIR)
 
 fclean: clean
+<<<<<<< HEAD
 	@rm $(NAME)
+=======
+	rm $(NAME)
+>>>>>>> origin/start_sha224_dev
 
 re: fclean all
 

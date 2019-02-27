@@ -1,33 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memcpy.c                                        :+:      :+:    :+:   */
+/*   del_msg.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sharris <sharris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/07/12 14:12:55 by sharris           #+#    #+#             */
-/*   Updated: 2018/07/12 14:12:55 by sharris          ###   ########.fr       */
+/*   Created: 2019/02/25 02:58:47 by sharris           #+#    #+#             */
+/*   Updated: 2019/02/25 02:58:49 by sharris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
+#include <ft_ssl.h>
 
-void	*ft_memcpy(void *dst, const void *src, size_t n)
+void	del_msg(t_msg **msg)
 {
-	unsigned char		*d;
-	unsigned const char	*s;
-	size_t				i;
-
-	if (src == NULL)
-		return (dst);
-	d = dst;
-	s = src;
-	i = 0;
-	while (i++ < n)
-	{
-		*d = *s;
-		d++;
-		s++;
-	}
-	return (dst);
+	ft_memdel((void**)&((*msg)->contents));
+	free((*msg));
+	*msg = NULL;
 }

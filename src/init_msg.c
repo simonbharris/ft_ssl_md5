@@ -1,33 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memcpy.c                                        :+:      :+:    :+:   */
+/*   init_msg.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sharris <sharris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/07/12 14:12:55 by sharris           #+#    #+#             */
-/*   Updated: 2018/07/12 14:12:55 by sharris          ###   ########.fr       */
+/*   Created: 2019/02/25 02:59:13 by sharris           #+#    #+#             */
+/*   Updated: 2019/02/25 02:59:14 by sharris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
+#include <ft_ssl.h>
 
-void	*ft_memcpy(void *dst, const void *src, size_t n)
+t_msg	*init_msg(void)
 {
-	unsigned char		*d;
-	unsigned const char	*s;
-	size_t				i;
+	t_msg *new_msg;
 
-	if (src == NULL)
-		return (dst);
-	d = dst;
-	s = src;
-	i = 0;
-	while (i++ < n)
-	{
-		*d = *s;
-		d++;
-		s++;
-	}
-	return (dst);
+	new_msg = ft_memalloc(sizeof(t_msg));
+	new_msg->contents = NULL;
+	new_msg->len = 0;
+	return (new_msg);
 }
