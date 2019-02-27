@@ -23,6 +23,6 @@ t_msg	*get_file_contents(char *file)
         }
     }
     else
-        ft_printf("ft_ssl: %s: Error, check file name and permissions", file);
+        ft_printf("ft_ssl: %s: Error, check file name and permissions\n", file);
     return(msg);
 }
