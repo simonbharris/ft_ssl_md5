@@ -34,10 +34,10 @@
 ** ---- Sructs ----
 */
 
-typedef struct s_msg
+typedef struct	s_msg
 {
-	unsigned char *contents;
-	uint64_t len;
+	unsigned char	*contents;
+	uint64_t		len;
 }				t_msg;
 
 typedef struct	s_ssl_f
@@ -48,8 +48,8 @@ typedef struct	s_ssl_f
 
 typedef struct	s_ssl_opts
 {
-    char c;
-    int flag;
+    char	c;
+    int		flag;
 }				t_ssl_opts;
 
 
@@ -69,39 +69,39 @@ int g_ft_ssl_flags;
 ** ------ Utilities ------
 */
 
-unsigned long long swap_endian_uint64(long long bits);
-char quartet_to_hex(unsigned char quartet);
-t_msg *init_msg();
-void del_msg(t_msg **msg);
-void	ft_ssl_usage(void);
-void	ft_ssl_help(void);
+unsigned long long	swap_endian_uint64(long long bits);
+char				quartet_to_hex(unsigned char quartet);
+t_msg				*init_msg();
+void				del_msg(t_msg **msg);
+void				ft_ssl_usage(void);
+void				ft_ssl_help(void);
 
 /*
 ** ------ Input / Output ------
 */
 
-void		load_ftssl_opts(char **argv, int *ai);
-t_msg	*get_file_contents(char *file);
-void handle_stdin(const t_ssl_f *ssl_f);
-void print_explicit_format(t_ssl_f hashtype, char* out_digest, char *original , int is_string);
+void				load_ftssl_opts(char **argv, int *ai);
+t_msg				*get_file_contents(char *file);
+void				handle_stdin(const t_ssl_f *ssl_f);
+void				print_explicit_format(t_ssl_f hashtype, char* out_digest, char *original , int is_string);
 
 /*
 ** ------ MD5 ------
 */
 
-void process_md5(uint8_t *initial_msg, size_t initial_len, unsigned int hashbuff[4]);
-char *ft_md5(t_msg *msg);
+void				process_md5(uint8_t *initial_msg, size_t initial_len, unsigned int hashbuff[4]);
+char				*ft_md5(t_msg *msg);
 
 
 /*
 ** ------ SHA Family ------
 */
 
-void process_sha224(unsigned char *msg, uint64_t new_len, unsigned int h[8]);
-char *ft_sha224(t_msg *initial_msg);
+void 				process_sha224(unsigned char *msg, uint64_t new_len, unsigned int h[8]);
+char 				*ft_sha224(t_msg *initial_msg);
 
-void process_sha256(unsigned char *msg, uint64_t new_len, unsigned int h[8]);
-char *ft_sha256(t_msg *initial_msg);
+void 				process_sha256(unsigned char *msg, uint64_t new_len, unsigned int h[8]);
+char 				*ft_sha256(t_msg *initial_msg);
 
 
 /*
@@ -118,13 +118,13 @@ char *ft_sha256(t_msg *initial_msg);
 */
 
 static const t_ssl_opts g_ssl_opts[] =
-		{
-				{ 'p', FTSSL_P },
-				{ 'q', FTSSL_Q },
-				{ 'r', FTSSL_R },
-				{ 's', FTSSL_S },
-				{ '\0', 0 }
-		};
+{
+	{ 'p', FTSSL_P },
+	{ 'q', FTSSL_Q },
+	{ 'r', FTSSL_R },
+	{ 's', FTSSL_S },
+	{ '\0', 0 }
+};
 
 /*
 ** ----- Function Dispatcher ------
@@ -136,11 +136,10 @@ static const t_ssl_opts g_ssl_opts[] =
 */
 
 static const t_ssl_f g_ssl_functs[] =
-		{
-				{ "md5", &ft_md5 },
-				{ "sha256", &ft_sha256 },
-				{ "sha224", &ft_sha224 },
-				{ NULL, NULL }
-		};
+{
+	{ "md5", &ft_md5 },
+	{ "sha256", &ft_sha256 },
+	{ NULL, NULL }
+};
 
 #endif

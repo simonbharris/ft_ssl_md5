@@ -10,38 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-<<<<<<< HEAD
-#include "../libft/includes/libft.h"
 #include <ft_ssl.h>
 
-void	ft_ssl_usage(void)
-{
-	int i;
-
-	i = 0;
-	ft_printf("usage: ft_ssl command [-");
-	while (ssl_opts[i].c && ssl_opts[i].c != 's')
-		ft_printf("%c", ssl_opts[i++].c);
-	ft_printf("] [-s string] [files ...]\n");
-}
-
-void	ft_ssl_help(void)
-{
-	int i;
-
-	i = 0;
-	ft_ssl_usage();
-	ft_printf("commands: ");
-	while (ssl_functs[i].name)
-		ft_printf("%s ", ssl_functs[i++].name);
-	ft_printf("\n");
-	exit(0);
-}
-
-=======
-#include <ft_ssl.h>
-
->>>>>>> origin/start_sha224_dev
 /*
 ** Should be run on the argv[] that contains the '-s' string.
 ** Detects if the string is provided in the same 'string'
@@ -53,18 +23,6 @@ void	ft_ssl_help(void)
 ** in such that argv_offset[0] will contain the '-s' option.
 */
 
-<<<<<<< HEAD
-void	handle_string_option(char **argv_offset, const t_ssl_f *ssl_f, int *i)
-{
-	char *digest;
-	char *tmp;
-
-	tmp = ft_strchr(argv_offset[0], 's') + 1;
-	if (*tmp)
-	{
-		digest = ssl_f->funct(tmp);
-		print_explicit_format(*ssl_f, digest, tmp, 1);
-=======
 void	print_stropt(char *str, t_msg *msg, const t_ssl_f *ssl_f)
 {
 	char *digest;
@@ -86,17 +44,11 @@ void	handle_string_option(char **argv_offset, const t_ssl_f *ssl_f, int *i)
 	if (*tmp)
 	{
 		print_stropt(tmp, msg, ssl_f);
->>>>>>> origin/start_sha224_dev
 		*i += 1;
 	}
 	else if (argv_offset[1])
 	{
-<<<<<<< HEAD
-		digest = ssl_f->funct(argv_offset[1]);
-		print_explicit_format(*ssl_f, digest, argv_offset[1], 1);
-=======
 		print_stropt(argv_offset[1], msg, ssl_f);
->>>>>>> origin/start_sha224_dev
 		*i += 2;
 	}
 	else
@@ -105,27 +57,22 @@ void	handle_string_option(char **argv_offset, const t_ssl_f *ssl_f, int *i)
 		ft_ssl_usage();
 		exit(0);
 	}
-<<<<<<< HEAD
-	free(digest);
-=======
 	del_msg(&msg);
->>>>>>> origin/start_sha224_dev
 }
-
+/*
+If print option, always trigger
+else if
+	no (string argument || argv[i] exists)
+*/
 void	print_hash(char **argv, const t_ssl_f *ssl_f)
 {
 	int		i;
 	char	*digest;
-<<<<<<< HEAD
-	char	*file_content;
-=======
 	t_msg	*message;
->>>>>>> origin/start_sha224_dev
 
 	i = 0;
 	load_ftssl_opts(argv, &i);
-	if (g_ft_ssl_flags & FTSSL_P || (argv[i] == NULL
-	|| (argv[i][0] == '-' && argv[i + 1] == NULL)))
+	if ((g_ft_ssl_flags & FTSSL_P) || !((g_ft_ssl_flags & FTSSL_S) || argv[i]))
 		handle_stdin(ssl_f);
 	if (g_ft_ssl_flags & FTSSL_S)
 		while (argv[i] && argv[i][0] == '-' && ft_strchr(argv[i], 's'))
@@ -134,17 +81,10 @@ void	print_hash(char **argv, const t_ssl_f *ssl_f)
 		i++;
 	while (argv[i])
 	{
-<<<<<<< HEAD
-		if ((file_content = get_file_contents(argv[i])) != NULL)
-		{
-			digest = ssl_f->funct(file_content);
-			ft_memdel((void **)&(file_content));
-=======
 		if ((message = get_file_contents(argv[i])) != NULL)
 		{
 			digest = ssl_f->funct(message);
 			del_msg(&message);
->>>>>>> origin/start_sha224_dev
 			print_explicit_format(*ssl_f, digest, argv[i], 0);
 			ft_memdel((void **)&(digest));
 		}
@@ -165,23 +105,14 @@ int		main(int argc, char **argv)
 	else
 	{
 		i = -1;
-<<<<<<< HEAD
-		while (ssl_functs[++i].name)
-			if (ft_strequ(ssl_functs[i].name, argv[1]))
-=======
 		while (g_ssl_functs[++i].name)
 			if (ft_strequ(g_ssl_functs[i].name, argv[1]))
->>>>>>> origin/start_sha224_dev
 			{
 				sfunct = &g_ssl_functs[i];
 				print_hash(&argv[2], sfunct);
 				break ;
 			}
-<<<<<<< HEAD
-		if (!ssl_functs[i].name)
-=======
 		if (!g_ssl_functs[i].name)
->>>>>>> origin/start_sha224_dev
 		{
 			ft_printf("ft_ssl: Error: '%s' is an invalid c ommand\n", argv[1]);
 			ft_ssl_usage();

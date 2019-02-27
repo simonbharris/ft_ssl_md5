@@ -6,13 +6,13 @@ t_msg	*get_file_contents(char *file)
     int ret;
     t_msg *msg;
     char buff[SSL_READ_BUFFSIZE];
-    char *tmp;
+    unsigned char *tmp;
 
     msg = NULL;
-    if (fd = open(file, O_RDONLY) > 0);
+    if ((fd = open(file, O_RDONLY)) > 0)
     {
         msg = init_msg();
-        while (ret = read(fd, buff, SSL_READ_BUFFSIZE))
+        while ((ret = read(fd, buff, SSL_READ_BUFFSIZE)))
         {
             tmp = msg->contents;
             msg->contents = ft_memalloc(msg->len + ret);
@@ -22,5 +22,7 @@ t_msg	*get_file_contents(char *file)
             free(tmp);
         }
     }
+    else
+        ft_printf("ft_ssl: %s: Error, check file name and permissions", file);
     return(msg);
 }

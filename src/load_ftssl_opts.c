@@ -1,6 +1,6 @@
 #include <ft_ssl.h>
 
-int get_ft_ssl_opt(char c)
+int            get_ft_ssl_opt(char c)
 {
     int i = 0;
     while (g_ssl_opts[i].c)
@@ -18,7 +18,7 @@ void		load_ftssl_opts(char **argv, int *ai)
     int j = 0;
     int val = 0;
 
-    while (*argv[i] && argv[i][0] == '-' && argv[i][1])
+    while (argv[i] && argv[i][0] == '-' && argv[i][1])
     {
         j = 0;
         while (argv[i][++j])
@@ -28,7 +28,7 @@ void		load_ftssl_opts(char **argv, int *ai)
             else
             {
                 ft_printf("ft_ssl: Error: Invalid flag: %c", argv[i][j]);
-                ft_print_usage();
+                ft_ssl_usage();
             }
             if (val == FTSSL_S)
             {
