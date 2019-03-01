@@ -110,8 +110,8 @@ int		main(int argc, char **argv)
 			}
 		if (!g_ssl_functs[i].name)
 		{
-			ft_printf("ft_ssl: Error: '%s' is an invalid c ommand\n", argv[1]);
-			ft_ssl_usage();
+			ft_printf("ft_ssl: Error: '%s' is an invalid command\n", argv[1]);
+			ft_ssl_help();
 		}
 	}
 	return (0);
