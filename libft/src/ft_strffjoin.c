@@ -26,7 +26,7 @@ char		*ft_strffjoin(char **dst, char **src)
 	if (*dst == NULL)
 	{
 		*dst = ft_strdup(*src);
-        ft_memdel((void **)&(*src));
+		ft_memdel((void **)&(*src));
 		return (*dst);
 	}
 	tmp = ft_strdup(*dst);

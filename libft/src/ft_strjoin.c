@@ -23,10 +23,10 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	int		i;
 
 	i = 0;
-    if (!s1 && s2)
-        return (ft_strdup(s2));
-    else if (s1 && !s2)
-        return (ft_strdup(s1));
+	if (!s1 && s2)
+		return (ft_strdup(s2));
+	else if (s1 && !s2)
+		return (ft_strdup(s1));
 	else if ((!s1 && !s2) || NULL == (out = ft_strnew((ft_strlen(s1) +
 		ft_strlen(s2)))))
 		return (NULL);
