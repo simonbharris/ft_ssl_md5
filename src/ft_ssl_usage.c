@@ -27,10 +27,16 @@ void	ft_ssl_help(void)
 {
 	int i;
 
-	i = 0;
 	ft_ssl_usage();
-	ft_printf("Commands:\n");
+	ft_printf("\nOptions:\n");
+	i = -1;
+	while (g_ssl_opts[++i].c)
+		ft_printf("-%c -- %s\n", g_ssl_opts[i].c, g_ssl_opts[i].desc);
+	i = 0;
+	ft_printf("\nStandard commands:\n");
+	ft_printf("\nMessage Digest commands:\n");
 	while (g_ssl_functs[i].name)
 		ft_printf("   %s\n", g_ssl_functs[i++].name);
+	ft_printf("\nCipher commands:\n");
 	exit(0);
 }
