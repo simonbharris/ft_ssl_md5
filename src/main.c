@@ -59,11 +59,7 @@ void	handle_string_option(char **argv_offset, const t_ssl_f *ssl_f, int *i)
 	}
 	del_msg(&msg);
 }
-/*
-If print option, always trigger
-else if
-	no (string argument || argv[i] exists)
-*/
+
 void	print_hash(char **argv, const t_ssl_f *ssl_f)
 {
 	int		i;
