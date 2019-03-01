@@ -32,22 +32,20 @@ CE = \033[0m
 CR = \033[1A
 LOGO = $(CK)$(CG)[$(NAME)]
 
-all: start $(NAME)
-
-$(NAME): start $(OBJ) $(LIB)
+$(NAME): $(OBJ_DIR) $(OBJ) $(LIB)
 	@gcc -Llibft/ -lft -lftprintf -I libft/includes/ $(INCLUDES) $(OBJ) -o $(NAME)
 	@echo "$(LOGO) Built:$(CY) ft_ssl$(CE)"
 
-start:
-	@echo "$(LOGO) Making$(CY) ft_ssl$(CE)"
+all: $(NAME)
 
 $(LIB):
 	@make -C libft/
 
 $(OBJ_DIR):
+	@echo "$(LOGO) Making$(CY) ft_ssl$(CE)"
 	@mkdir -p $(OBJ_DIR)
 
-$(OBJ): $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(OBJ_DIR)
+$(OBJ): $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 	@echo "$(LOGO) Compiling:$(CY) $@ $(CE)$(CR)"
 	@gcc -c $< -o $@ $(INC)
 
@@ -55,7 +53,7 @@ clean:
 	@rm -Rf $(OBJ_DIR)
 
 fclean: clean
-	@rm $(NAME)
+	@rm -f $(NAME)
 
 re: fclean all
 

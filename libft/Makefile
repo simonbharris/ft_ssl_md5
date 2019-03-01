@@ -124,7 +124,7 @@ LOGO = $(CK)$(CG)[Libft]
 AR = ar
 ARFLAGS = rcs
 
-all: mkdir $(NAME) $(FT_PRINTF)
+all: $(OBJ_DIR) $(NAME) $(FT_PRINTF)
 
 $(NAME): $(OBJ)
 	@echo "$(LOGO) Building:$(CY) Libft $(CE)$(CR)"
@@ -135,10 +135,8 @@ $(OBJ): $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 	@echo "$(LOGO) Compiling:$(CY) $@ $(CE)$(CR)"
 	@$(CC) $(CFLAGS) -I$(INC_DIR) -o $@ $<
 
-mkdir: $(OBJ_DIR)
-	
 $(OBJ_DIR):
-	@mkdir obj
+	@mkdir -p obj
 
 $(FT_PRINTF):
 	@make -C $(FT_PF_DIR)
