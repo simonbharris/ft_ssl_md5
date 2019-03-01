@@ -39,7 +39,7 @@ static char				*sha224tostr(unsigned int hashbuff[8])
 	int		j;
 
 	i = 0;
-	out = ft_strnew(56);
+	out = ft_strnew(56 + 1);
 	while (i < 7)
 	{
 		p = (uint8_t *)&hashbuff[i];

@@ -12,6 +12,13 @@
 
 #include <ft_ssl.h>
 
+#define R_ROT(x, c) (((x) >> (c)) | ((x) << (32 - (c))))
+
+#define EP0(x) (R_ROT(x,2) ^ R_ROT(x,13) ^ R_ROT(x,22))
+#define EP1(x) (R_ROT(x,6) ^ R_ROT(x,11) ^ R_ROT(x,25))
+#define S0(w, i) (R_ROT(w[i - 15], 7) ^ R_ROT(w[i - 15], 18) ^ (w[i - 15] >> 3))
+#define S1(w, i) (R_ROT(w[i - 2], 17) ^ R_ROT(w[i - 2], 19) ^ (w[i - 2] >> 10))
+
 static const int g_sha256_k[] = {
 	0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5,
 	0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
@@ -52,9 +59,9 @@ static void				load_chunk(unsigned int w[64],
 	while (offset + i < offset + 64)
 	{
 		if (i < 16)
-			w[i] = getword(msg, offset + i * 4);
+				w[i] = getword(msg, offset + i * 4);
 		else
-			w[i] = w[i - 16] + SHA_S0(w) + w[i - 7] + SHA_S1(w);
+			w[i] = w[i - 16] + S0(w, i) + w[i - 7] + S1(w, i);
 		i++;
 	}
 }

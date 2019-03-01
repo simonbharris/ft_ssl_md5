@@ -11,14 +11,7 @@
 # define FTSSL_R 0x04
 # define FTSSL_S 0x08
 
-# define SSL_READ_BUFFSIZE 1024
-
-/*
-** Binary rotation macros
-*/
-
-# define LEFTROTATE(x, c) (((x) << (c)) | ((x) >> (32 - (c))))
-# define RIGHTROTATE(x, c) (((x) >> (c)) | ((x) << (32 - (c))))
+# define SSL_READ_BUFFSIZE 2048
 
 /*
 ** SHA Processors
@@ -26,10 +19,7 @@
 
 # define CH(x,y,z) (((x) & (y)) ^ (~(x) & (z)))
 # define MAJ(x,y,z) (((x) & (y)) ^ ((x) & (z)) ^ ((y) & (z)))
-# define EP0(x) (RIGHTROTATE(x,2) ^ RIGHTROTATE(x,13) ^ RIGHTROTATE(x,22))
-# define EP1(x) (RIGHTROTATE(x,6) ^ RIGHTROTATE(x,11) ^ RIGHTROTATE(x,25))
-# define SHA_S0(w) (RIGHTROTATE(w[i - 15], 7) ^ RIGHTROTATE(w[i - 15], 18) ^ (w[i - 15] >> 3))
-# define SHA_S1(w) (RIGHTROTATE(w[i - 2], 17) ^ RIGHTROTATE(w[i - 2], 19) ^ (w[i - 2] >> 10))
+
 /*
 ** ---- Sructs ----
 */
@@ -98,16 +88,18 @@ char				*ft_md5(t_msg *msg);
 ** ------ SHA Family ------
 */
 
-void 				process_sha224(unsigned char *msg, uint64_t new_len, unsigned int h[8]);
 char 				*ft_sha224(t_msg *initial_msg);
 
 void 				process_sha256(unsigned char *msg, uint64_t new_len, unsigned int h[8]);
 char 				*ft_sha256(t_msg *initial_msg);
 
+void				process_sha512(unsigned char *msg, uint64_t new_len, unsigned long long h[8]);
+char				*ft_sha512(t_msg *initial_msg);
+
 
 /*
 ** **************************
-** ------ Dispatchers -------
+** ------   Globals   -------
 ** **************************
 */
 
@@ -141,6 +133,7 @@ static const t_ssl_f g_ssl_functs[] =
 	{ "md5", &ft_md5 },
 	{ "sha256", &ft_sha256 },
 	{ "sha224", &ft_sha224 },
+	{ "sha512", &ft_sha512 },
 	{ NULL, NULL }
 };
 
