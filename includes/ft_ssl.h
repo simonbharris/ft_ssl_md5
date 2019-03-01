@@ -140,6 +140,7 @@ static const t_ssl_f g_ssl_functs[] =
 {
 	{ "md5", &ft_md5 },
 	{ "sha256", &ft_sha256 },
+	{ "sha224", &ft_sha224 },
 	{ NULL, NULL }
 };
 
