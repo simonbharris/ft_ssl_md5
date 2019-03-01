@@ -50,6 +50,7 @@ typedef struct	s_ssl_opts
 {
     char	c;
     int		flag;
+	char	*desc;
 }				t_ssl_opts;
 
 
@@ -119,11 +120,11 @@ char 				*ft_sha256(t_msg *initial_msg);
 
 static const t_ssl_opts g_ssl_opts[] =
 {
-	{ 'p', FTSSL_P },
-	{ 'q', FTSSL_Q },
-	{ 'r', FTSSL_R },
-	{ 's', FTSSL_S },
-	{ '\0', 0 }
+	{ 'p', FTSSL_P, "Prints stdin to screen" },
+	{ 'q', FTSSL_Q, "Quiet mode, displays only hash values."},
+	{ 'r', FTSSL_R, "Reverse mode, places filename or string after hash"},
+	{ 's', FTSSL_S, "String parameter, the following parameter acts as string instead of file."},
+	{ '\0', 0 , NULL}
 };
 
 /*
