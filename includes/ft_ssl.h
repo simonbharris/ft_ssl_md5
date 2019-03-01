@@ -86,15 +86,18 @@ char				*ft_md5(t_msg *msg);
 
 /*
 ** ------ SHA Family ------
+** SHA224 uses process_sha256
+** SHA384 uses process_sha512
 */
 
-char 				*ft_sha224(t_msg *initial_msg);
-
 void 				process_sha256(unsigned char *msg, uint64_t new_len, unsigned int h[8]);
-char 				*ft_sha256(t_msg *initial_msg);
-
 void				process_sha512(unsigned char *msg, uint64_t new_len, unsigned long long h[8]);
+
+char 				*ft_sha224(t_msg *initial_msg);
+char 				*ft_sha256(t_msg *initial_msg);
+char				*ft_sha384(t_msg *initial_msg);
 char				*ft_sha512(t_msg *initial_msg);
+
 
 
 /*
@@ -131,8 +134,9 @@ static const t_ssl_opts g_ssl_opts[] =
 static const t_ssl_f g_ssl_functs[] =
 {
 	{ "md5", &ft_md5 },
-	{ "sha256", &ft_sha256 },
 	{ "sha224", &ft_sha224 },
+	{ "sha256", &ft_sha256 },
+	{ "sha384", &ft_sha384 },
 	{ "sha512", &ft_sha512 },
 	{ NULL, NULL }
 };

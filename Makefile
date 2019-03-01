@@ -13,8 +13,9 @@ SRC_RAW =   main \
             process_md5 \
             process_sha256 \
 			process_sha512 \
-            sha256 \
 			sha224 \
+            sha256 \
+			sha384 \
 			sha512 \
             quartet_to_hex \
             swap_endian_uint64 \
