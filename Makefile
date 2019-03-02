@@ -2,7 +2,6 @@ NAME = ft_ssl
 
 SRC_DIR = src/
 OBJ_DIR = obj/
-SUB_DIR = io/ MD5/ SHA256/ util/
 
 SRC_RAW =   main \
             get_file_contents \
@@ -23,11 +22,18 @@ SRC_RAW =   main \
             init_msg \
             ft_ssl_usage
 
-SRC = $(SRC_RAW:%=$(SRC_DIR)%.c)
+
+SRC = $(SRC_RAW:%=%.c)
 OBJ = $(SRC_RAW:%=$(OBJ_DIR)%.o)
 
-LIB =   libft/libft.a
-INC =   -I includes/ -I libft/includes
+LIB =   libft/libft.a libft/libftprintf.a
+INC = includes/ft_ssl.h
+
+INC_FLAGS =   -I includes/ -I libft/includes
+W_FLAGS = -Wall -Wextra -Werror
+
+VPATH = src/io/ src/md5/ src/sha/ src/util/ src/msg_t src/
+
 
 CK = \033[K
 CG = \033[92m
@@ -49,9 +55,9 @@ $(OBJ_DIR):
 	@echo "$(LOGO) Making$(CY) ft_ssl$(CE)"
 	@mkdir -p $(OBJ_DIR)
 
-$(OBJ): $(OBJ_DIR)%.o: $(SRC_DIR)%.c
+$(OBJ): $(OBJ_DIR)%.o: %.c
 	@echo "$(LOGO) Compiling:$(CY) $@ $(CE)$(CR)"
-	@gcc -c $< -o $@ $(INC)
+	@gcc $(W_FLAGS) -c $< -o $@ $(INC_FLAGS)
 
 clean:
 	@rm -Rf $(OBJ_DIR)

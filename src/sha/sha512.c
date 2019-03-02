@@ -30,7 +30,7 @@ static unsigned char	*expand_msg(uint8_t *initial_msg,
 	return (msg);
 }
 
-static char				*sha512tostr(unsigned long long hashbuff[8])
+static char				*sha512tostr(uint64_t hashbuff[8])
 {
 	char	*out;
 	int		i;
@@ -54,7 +54,7 @@ static char				*sha512tostr(unsigned long long hashbuff[8])
 	return (out);
 }
 
-static void				init_hash(unsigned long long h[8])
+static void				init_hash(uint64_t h[8])
 {
 	h[0] = 0x6a09e667f3bcc908;
 	h[1] = 0xbb67ae8584caa73b;
@@ -68,10 +68,10 @@ static void				init_hash(unsigned long long h[8])
 
 char					*ft_sha512(t_msg *initial_msg)
 {
-	unsigned long long	h[8];
-	size_t			new_len;
-	unsigned char	*msg;
-	char			*digest;
+	uint64_t			h[8];
+	size_t				new_len;
+	unsigned char		*msg;
+	char				*digest;
 
 	init_hash(h);
 	msg = expand_msg(initial_msg->contents, initial_msg->len, &new_len);

@@ -59,7 +59,7 @@ static void				load_chunk(unsigned int w[64],
 	while (offset + i < offset + 64)
 	{
 		if (i < 16)
-				w[i] = getword(msg, offset + i * 4);
+			w[i] = getword(msg, offset + i * 4);
 		else
 			w[i] = w[i - 16] + S0(w, i) + w[i - 7] + S1(w, i);
 		i++;
@@ -99,7 +99,7 @@ void					process_sha256(unsigned char *msg,
 	int				i;
 
 	offset = 0;
-	while (offset < new_len)
+	while ((uint64_t)offset < new_len)
 	{
 		load_chunk(w, msg, offset);
 		i = -1;
