@@ -12,6 +12,10 @@
 
 #include <ft_ssl.h>
 
+/*
+** Reads file as bytes and retains the length into a struct.
+*/
+
 t_msg	*get_file_contents(char *file)
 {
 	int				fd;

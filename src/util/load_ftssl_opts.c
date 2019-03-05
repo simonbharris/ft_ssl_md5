@@ -12,6 +12,10 @@
 
 #include <ft_ssl.h>
 
+/*
+** Returns the bit associated with the flag represented by c
+*/
+
 int			get_ft_ssl_opt(char c)
 {
 	int i;
@@ -26,12 +30,22 @@ int			get_ft_ssl_opt(char c)
 	return (0);
 }
 
+/*
+** Alert invalid flag and exit program.
+*/
+
 static void	print_invalid_ssl_flag(char c)
 {
 	ft_printf("ft_ssl: Error: Invalid flag: %c\n", c);
 	ft_ssl_usage();
 	exit(0);
 }
+
+/*
+** Loads all of the flags from the passed arguments.
+** Note that argv is passed as an offset, where the first element
+** is immediately after the command.
+*/
 
 void		load_ftssl_opts(char **argv, int *ai)
 {

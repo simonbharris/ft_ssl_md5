@@ -10,6 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+/*
+** Returns a hex character representing a quartet of bytes.
+*/
+
 char	quartet_to_hex(unsigned char quartet)
 {
 	quartet = quartet & 0xf;

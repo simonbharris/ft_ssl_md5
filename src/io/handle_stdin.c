@@ -12,6 +12,10 @@
 
 #include <ft_ssl.h>
 
+/*
+** Gathers input from stdin and prints results.
+*/
+
 void	handle_stdin(const t_ssl_f *ssl_f)
 {
 	t_msg			*msg;

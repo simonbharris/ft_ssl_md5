@@ -12,6 +12,12 @@
 
 #include <ft_ssl.h>
 
+/*
+** A t_msg holds information about the message to digest.
+** A length is retained in the event we read a null byte
+** We cannot use functions that stop on null-terminated strings.
+*/
+
 t_msg	*init_msg(void)
 {
 	t_msg *new_msg;

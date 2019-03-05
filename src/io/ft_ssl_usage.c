@@ -12,6 +12,12 @@
 
 #include <ft_ssl.h>
 
+/*
+** A couple functions to print usages.
+** These dynamically add new functions with ease
+** by adding new options in the haeder.
+*/
+
 void	ft_ssl_usage(void)
 {
 	int i;

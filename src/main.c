@@ -13,14 +13,7 @@
 #include <ft_ssl.h>
 
 /*
-** Should be run on the argv[] that contains the '-s' string.
-** Detects if the string is provided in the same 'string'
-** or as a separate parameter,
-** IE: '-shello' vs '-s hello'
-**
-** argv_offset is the argv addressed pass at
-** a specific point in the index, IE: &argv[3]
-** in such that argv_offset[0] will contain the '-s' option.
+** Prints the string associated with the -s option.
 */
 
 void	print_stropt(char *str, t_msg *msg, const t_ssl_f *ssl_f)
@@ -33,6 +26,12 @@ void	print_stropt(char *str, t_msg *msg, const t_ssl_f *ssl_f)
 	print_explicit_format(*ssl_f, digest, str, 1);
 	free(digest);
 }
+
+/*
+** This handles the -s option.
+** Works for both options where the string is passed as the same "word"
+** `-shello` is equal to `-s "hello"`
+*/
 
 void	handle_string_option(char **argv_offset, const t_ssl_f *ssl_f, int *i)
 {
@@ -60,6 +59,11 @@ void	handle_string_option(char **argv_offset, const t_ssl_f *ssl_f, int *i)
 	del_msg(&msg);
 }
 
+/*
+** Captured the options to be set for digest function,
+** then loops all messages through digest.
+*/
+
 void	print_hash(char **argv, const t_ssl_f *ssl_f)
 {
 	int		i;
@@ -73,8 +77,6 @@ void	print_hash(char **argv, const t_ssl_f *ssl_f)
 	if (g_ft_ssl_flags & FTSSL_S)
 		while (argv[i] && argv[i][0] == '-' && ft_strchr(argv[i], 's'))
 			handle_string_option(&argv[i], ssl_f, &i);
-	else if (g_ft_ssl_flags)
-		i++;
 	while (argv[i])
 	{
 		if ((message = get_file_contents(argv[i])) != NULL)
@@ -87,6 +89,11 @@ void	print_hash(char **argv, const t_ssl_f *ssl_f)
 		i++;
 	}
 }
+
+/*
+** Main handles usages, determined which function to run,
+** and some error handling for lack of arguments.
+*/
 
 int		main(int argc, char **argv)
 {

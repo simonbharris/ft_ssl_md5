@@ -10,6 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+/*
+** Converts the endianness of a 64 bit integer.
+*/
+
 unsigned long long	swap_endian_uint64(long long bits)
 {
 	return (

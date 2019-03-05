@@ -60,9 +60,11 @@ $(OBJ): $(OBJ_DIR)%.o: %.c
 	@gcc $(W_FLAGS) -c $< -o $@ $(INC_FLAGS)
 
 clean:
+	@make -C libft/ clean
 	@rm -Rf $(OBJ_DIR)
 
 fclean: clean
+	@make -C libft/ fclean
 	@rm -f $(NAME)
 
 re: fclean all
