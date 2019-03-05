@@ -28,8 +28,9 @@ int			get_ft_ssl_opt(char c)
 
 static void	print_invalid_ssl_flag(char c)
 {
-	ft_printf("ft_ssl: Error: Invalid flag: %c", c);
+	ft_printf("ft_ssl: Error: Invalid flag: %c\n", c);
 	ft_ssl_usage();
+	exit(0);
 }
 
 void		load_ftssl_opts(char **argv, int *ai)
