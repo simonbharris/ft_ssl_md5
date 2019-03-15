@@ -14,11 +14,11 @@ Standard commands:
   [Not yet implemented]  
 
 Message Digest commands:  
-   md5  
-   sha224  
-   sha256  
-   sha384  
-   sha512  
+ md5  
+ sha224  
+ sha256  
+ sha384  
+ sha512  
    
 Cipher commands:  
   [Not yet implemented]  
