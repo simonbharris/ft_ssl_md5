@@ -49,12 +49,12 @@ ft_ssl sha224 -q -s hello
 ea09ae9cc6768c50fcee903ed054556e5bfc8347907f12598aa24193
 
 
----- stdin without print
+---- Stdin without print
 
 echo "Hello World" | ./ft_ssl sha384
 acbfd470c22c0d95a1d10a087dc31988b9f7bfeb13be70b876a73558be664e5858d11f9459923e6e5fd838cb5708b969
 
-----Print option
+--- Print option
 
 echo "Hello World" | ./ft_ssl sha256 -p
 Hello World
